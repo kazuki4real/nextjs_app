@@ -4,19 +4,25 @@ import React, { useEffect, useState } from "react";
 import { db } from "../lib/firebase";
 import firebase from "firebase";
 
-const GetFromFirebase = () => {
-  const [datas, setDatas] = useState([]);
-  const [images, setImages] = useState<any>("/default-user.png");
+export async function getStaticProps() {
+  const task: any[] = [];
+  await db.collection("users").onSnapshot((snapshot: any) => {
+    const dataSet = snapshot.docs.map((doc: any) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    task.push(dataSet);
+    console.log("task", task);
+  });
+  return {
+    props: {
+      task,
+    },
+  };
+}
 
-  useEffect(() => {
-    db.collection("users").onSnapshot((snapshot: any) => {
-      const dataSet = snapshot.docs.map((doc: any) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setDatas(dataSet);
-    });
-  }, []);
+const GetFromFirebase = ({ task }: any) => {
+  const [images, setImages] = useState<any>("/default-user.png");
 
   const handleImageUpload = (e: any) => {
     // console.log("value", e.target.value.substr(12));
@@ -41,17 +47,15 @@ const GetFromFirebase = () => {
   return (
     <div>
       <div className="image-upload">
-        <img
-          src={images}
-          alt={images}
-          style={{ width: "300px", height: "300px" }}
-        />
+        <Image src={images} alt={images} width={300} height={300} />
         <input type="file" name="" onChange={(e) => handleImageUpload(e)} />
       </div>
       <ul>
-        {datas.map((data: any, index: number) => (
-          <li key={index}>{data.name}</li>
-        ))}
+        {task ? (
+          task.map((data: any, index: number) => <li key={index}>{data.id}</li>)
+        ) : (
+          <p>nothing</p>
+        )}
       </ul>
     </div>
   );
