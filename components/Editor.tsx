@@ -6,21 +6,21 @@ import Prism from "prismjs";
 import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "prismjs/themes/prism.css";
-import firebase from "firebase";
+import "firebase/storage";
+import { firebase } from "../lib/firebase";
 
 const uploadImage = (blob: any, callback: any) => {
-  console.log("hoge", blob.name);
-  const storage = firebase.storage();
-  let showUrl = "";
-  storage
+  console.log("blob.name", blob.name);
+  const storageRef = firebase.storage();
+  storageRef
     .ref("images/")
     .put(blob)
     .then((snapshot) => {
-      snapshot.ref.getDownloadURL().then((url) => {
+      snapshot.ref.getDownloadURL().then((url: string) => {
         // return で url を返す必要がある markdown 表示用の url
         console.log("url is...", url);
 
-        callback(url, "image");
+        callback(url, "alt text");
       });
     });
 };
