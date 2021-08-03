@@ -64,7 +64,7 @@ const EditorComponent = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <Editor
         ref={editorRef}
         previewStyle="vertical"
@@ -86,12 +86,15 @@ const EditorComponent = () => {
       <h2>All Potsts</h2>
       <div className="post">
         {data.map((each: any) => (
-          <li key={each.id} style={{ listStyle: "none" }}>
+          <li
+            className="indivisual"
+            key={each.id}
+            style={{ listStyle: "none" }}
+          >
             <Viewer
               initialValue={each.markdown}
               plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
             />
-            <hr />
           </li>
         ))}
       </div>
