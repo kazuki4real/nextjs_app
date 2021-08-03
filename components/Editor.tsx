@@ -50,13 +50,17 @@ const EditorComponent = () => {
     setMarkdown(markdown);
 
     const markdownRef = await db.collection("forum").doc();
-    markdownRef.set(
-      {
-        markdown: markdown,
-        createdAt: new Date(),
-      },
-      { merge: true }
-    );
+    markdownRef
+      .set(
+        {
+          markdown: markdown,
+          createdAt: new Date(),
+        },
+        { merge: true }
+      )
+      .then(function () {
+        location.reload();
+      });
   };
 
   return (
