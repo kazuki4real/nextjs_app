@@ -1,6 +1,5 @@
 import React, { createRef, useRef, useEffect, useState } from "react";
 import { Editor, Viewer } from "@toast-ui/react-editor";
-import "codemirror/lib/codemirror.css";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import Prism from "prismjs";
 import "prismjs/themes/prism.css";
@@ -10,6 +9,9 @@ import "firebase/storage";
 import { firebase } from "../lib/firebase";
 import { db } from "../lib/firebase";
 import Button from "@material-ui/core/Button";
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+import TextField from "@material-ui/core/TextField";
 
 const uploadImage = (blob: any, callback: any) => {
   const storageRef = firebase.storage();
@@ -26,7 +28,7 @@ const uploadImage = (blob: any, callback: any) => {
 const EditorComponent = () => {
   const [data, setData] = useState<any>([]);
   const [markdowns, setMarkdown] = useState<any>("");
-  const [value, setValue] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
 
   useEffect(() => {
     getPost();
@@ -54,6 +56,7 @@ const EditorComponent = () => {
       .set(
         {
           markdown: markdown,
+          title: title,
           createdAt: new Date(),
         },
         { merge: true }
@@ -65,11 +68,19 @@ const EditorComponent = () => {
 
   return (
     <div className="container">
+      <TextField
+        value={title}
+        variant="outlined"
+        label="タイトル"
+        onChange={(e) => setTitle(e.target.value)}
+        style={{ width: "50%" }}
+      />
+
       <Editor
         ref={editorRef}
         previewStyle="vertical"
         height="500px"
-        plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+        plugins={[[codeSyntaxHighlight, { highlighter: Prism }], colorSyntax]}
         hooks={{
           addImageBlobHook: (blob, callback) => {
             uploadImage(blob, callback);
@@ -91,6 +102,8 @@ const EditorComponent = () => {
             key={each.id}
             style={{ listStyle: "none" }}
           >
+            <h3>{each.title}</h3>
+            <hr />
             <Viewer
               initialValue={each.markdown}
               plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
