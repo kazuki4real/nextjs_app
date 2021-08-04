@@ -17,7 +17,8 @@ import { MdQuestionAnswer } from "react-icons/md";
 const uploadImage = (blob: any, callback: any) => {
   const storageRef = firebase.storage();
   storageRef
-    .ref("images/")
+    .ref()
+    .child(`/images/${blob.name}`)
     .put(blob)
     .then((snapshot) => {
       snapshot.ref.getDownloadURL().then((url: string) => {
@@ -62,7 +63,7 @@ const EditorComponent = () => {
         },
         { merge: true }
       )
-      .then(function () {
+      .then(() => {
         location.reload();
       });
   };
@@ -99,25 +100,23 @@ const EditorComponent = () => {
         All Potsts <span>({data.length})</span>
       </h2>
       <div className="post">
-        {data.map((each: any) => (
-          <li
-            className="indivisual"
-            key={each.id}
-            style={{ listStyle: "none" }}
-          >
-            <h3 className="title">
-              <MdQuestionAnswer /> {each.title}
-            </h3>
-            <hr />
-            <Viewer
-              initialValue={each.markdown}
-              plugins={[
-                [codeSyntaxHighlight, { highlighter: Prism }],
-                colorSyntax,
-              ]}
-            />
-          </li>
-        ))}
+        {data &&
+          data.map((each: any) => (
+            <li
+              className="indivisual"
+              key={each.id}
+              style={{ listStyle: "none" }}
+            >
+              <h3 className="title">
+                <MdQuestionAnswer /> {each.title}
+              </h3>
+              <hr />
+              <Viewer
+                initialValue={each.markdown}
+                plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+              />
+            </li>
+          ))}
       </div>
     </div>
   );
