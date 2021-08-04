@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import TextField from "@material-ui/core/TextField";
+import { MdQuestionAnswer } from "react-icons/md";
 
 const uploadImage = (blob: any, callback: any) => {
   const storageRef = firebase.storage();
@@ -45,6 +46,8 @@ const EditorComponent = () => {
         setData(dataSet);
       });
   };
+
+  console.log("data", data);
 
   const editorRef: any = React.createRef();
   const getMarkdown = async () => {
@@ -94,7 +97,9 @@ const EditorComponent = () => {
         </Button>
       </div>
       <br />
-      <h2>All Potsts</h2>
+      <h2>
+        All Potsts <span>({data.length})</span>
+      </h2>
       <div className="post">
         {data.map((each: any) => (
           <li
@@ -102,7 +107,9 @@ const EditorComponent = () => {
             key={each.id}
             style={{ listStyle: "none" }}
           >
-            <h3>{each.title}</h3>
+            <h3 className="title">
+              <MdQuestionAnswer /> {each.title}
+            </h3>
             <hr />
             <Viewer
               initialValue={each.markdown}
