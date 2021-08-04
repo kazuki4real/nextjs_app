@@ -113,7 +113,10 @@ const EditorComponent = () => {
             <hr />
             <Viewer
               initialValue={each.markdown}
-              plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+              plugins={[
+                [codeSyntaxHighlight, { highlighter: Prism }],
+                colorSyntax,
+              ]}
             />
           </li>
         ))}
