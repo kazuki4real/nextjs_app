@@ -47,8 +47,6 @@ const EditorComponent = () => {
       });
   };
 
-  console.log("data", data);
-
   const editorRef: any = React.createRef();
   const getMarkdown = async () => {
     let markdown = editorRef.current.getInstance().getMarkdown();
