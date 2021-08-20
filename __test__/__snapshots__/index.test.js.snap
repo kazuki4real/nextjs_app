@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`初期表示の確認 サンプルページ 1`] = `
+<DocumentFragment>
+  <div>
+    このページのパスは/です。
+  </div>
+</DocumentFragment>
+`;

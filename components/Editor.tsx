@@ -62,7 +62,7 @@ const EditorComponent = () => {
         },
         { merge: true }
       )
-      .then(function () {
+      .then(() => {
         location.reload();
       });
   };

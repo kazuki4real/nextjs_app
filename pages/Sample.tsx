@@ -1,12 +1,10 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import React from 'react'
 import { useRouter } from 'next/router'
 
-export default function Index() {
+const Sample = () => {
   const router = useRouter()
-  console.log(router)
-
   const path = router.asPath
   return <div>このページのパスは{path}です。</div>
 }
+
+export default Sample
